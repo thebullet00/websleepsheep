@@ -6,7 +6,8 @@
     "dev": "next dev --hostname 127.0.0.1 --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run build && wrangler deploy"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "eslint-config-next": "^16.2.0",
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "wrangler": "^4.75.0"
   }
 }
