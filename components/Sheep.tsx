@@ -2,11 +2,20 @@ import type { CSSProperties } from "react";
 
 type SheepProps = {
   size?: number;
+  glow?: boolean;
   className?: string;
   style?: CSSProperties;
 };
 
-export default function Sheep({ size = 160, className = "", style }: SheepProps) {
+export default function Sheep({
+  size = 160,
+  glow = false,
+  className = "",
+  style,
+}: SheepProps) {
+  const glowOpacity = glow ? "0.44" : "0.28";
+  const haloRadius = glow ? 108 : 102;
+
   return (
     <svg
       width={size}
@@ -27,12 +36,12 @@ export default function Sheep({ size = 160, className = "", style }: SheepProps)
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(120 118) rotate(90) scale(104)"
         >
-          <stop stopColor="var(--purple-light)" stopOpacity="0.36" />
+          <stop stopColor="var(--purple-light)" stopOpacity={glowOpacity} />
           <stop offset="1" stopColor="var(--purple-light)" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      <circle cx="120" cy="118" r="102" fill="url(#sheepHalo)" />
+      <circle cx="120" cy="118" r={haloRadius} fill="url(#sheepHalo)" />
 
       <ellipse cx="120" cy="188" rx="57" ry="11" fill="var(--border)" />
 

@@ -1,58 +1,99 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import DeviceFrame from "../components/DeviceFrame";
+import FAQ from "../components/FAQ";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import PricingCard from "../components/PricingCard";
 import Sheep from "../components/Sheep";
 import StarField from "../components/StarField";
+import WaitlistForm from "../components/WaitlistForm";
 
-const STEPS = [
+const STATS = [
+  { value: "90 min", label: "Sleep cycle length" },
+  { value: "5–6 cycles", label: "Per night" },
+  { value: "~20 min", label: "Optimal wake window" },
+];
+
+const HOW_IT_WORKS = [
   {
     number: "01",
     title: "You fall asleep",
-    description: "Set your ideal wake-up range.\nThen close your eyes and drift off.",
+    description: "Sleep Sheep starts listening.\nQuietly tracking your night rhythm.",
   },
   {
     number: "02",
-    title: "Sleep Sheep tracks your cycles",
-    description: "Through the night, the app estimates\nwhere you are in each sleep phase.",
+    title: "It maps your sleep cycles in real time",
+    description: "The app reads your sleep movement.\nIt estimates your light/deep windows.",
   },
   {
     number: "03",
-    title: "You wake up at the perfect moment",
-    description: "When your light-sleep window opens,\nSleep Sheep wakes you up gently.",
+    title: "Your alarm fires at the lightest moment",
+    description: "You wake during your gentlest phase.\nLess fog, more energy.",
   },
 ];
 
 const FEATURES = [
   {
     title: "Smart alarm",
-    text: "Wakes you in your best window.\nLess groggy, more ready.",
+    text: "A wake-up window that adapts.\nBuilt to reduce morning grogginess.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="13" r="6.5" stroke="var(--purple-light)" />
-        <path d="M12 10V13.5L14.5 15" stroke="var(--white-warm)" strokeLinecap="round" />
-        <path d="M7 4.5L4.8 6.7" stroke="var(--border)" strokeLinecap="round" />
-        <path d="M17 4.5L19.2 6.7" stroke="var(--border)" strokeLinecap="round" />
+        <circle cx="12" cy="13" r="6.2" stroke="var(--purple-light)" />
+        <path d="M12 10V13.3L14.4 14.8" stroke="var(--white-warm)" strokeLinecap="round" />
+        <path d="M7.4 5L5.2 7" stroke="var(--border)" strokeLinecap="round" />
+        <path d="M16.6 5L18.8 7" stroke="var(--border)" strokeLinecap="round" />
       </svg>
     ),
   },
   {
-    title: "Sleep insights",
-    text: "See how nights evolve over time.\nSimple patterns, clear feedback.",
+    title: "Sleep cycles graph",
+    text: "Understand your night at a glance.\nTrends without clutter.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 17L8 13L11 15.5L16 9L20 12" stroke="var(--purple-light)" strokeLinecap="round" />
-        <path d="M4 19H20" stroke="var(--border)" strokeLinecap="round" />
+        <path d="M4 17L8 14L11 16L16 9L20 12" stroke="var(--purple-light)" strokeLinecap="round" />
+        <path d="M4 19H20" stroke="var(--border)" />
       </svg>
     ),
   },
   {
-    title: "Morning log",
-    text: "Log mood and energy in seconds.\nBuild awareness day by day.",
+    title: "Morning energy score",
+    text: "A simple daily check-in.\nSee how rested you feel.",
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="5" y="4.5" width="14" height="15" rx="2.5" stroke="var(--purple-light)" />
-        <path d="M9 9H15" stroke="var(--white-warm)" strokeLinecap="round" />
-        <path d="M9 13H13" stroke="var(--border)" strokeLinecap="round" />
+        <path d="M12 5L13.8 8.6L17.8 9.2L14.9 12L15.6 16L12 14.1L8.4 16L9.1 12L6.2 9.2L10.2 8.6Z" stroke="var(--purple-light)" />
+      </svg>
+    ),
+  },
+  {
+    title: "Sleep sounds",
+    text: "Soft ambient loops for bedtime.\nMade for calm routines.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M5 14H8L12 18V6L8 10H5V14Z" stroke="var(--purple-light)" />
+        <path d="M15 10.5C16.2 11.5 16.2 12.5 15 13.5" stroke="var(--white-warm)" strokeLinecap="round" />
+        <path d="M17.5 8.5C19.8 10.8 19.8 13.2 17.5 15.5" stroke="var(--border)" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "Wearable sync",
+    text: "Optional integrations over time.\nUse what you already have.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="8.3" y="6" width="7.4" height="12" rx="3.2" stroke="var(--purple-light)" />
+        <path d="M10 6V3.6M14 20.4V18" stroke="var(--border)" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "Weekly insights",
+    text: "Small summaries each week.\nSpot patterns and improve faster.",
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="4.5" y="5" width="15" height="14" rx="2.5" stroke="var(--purple-light)" />
+        <path d="M8 14V11M12 14V9M16 14V12" stroke="var(--white-warm)" strokeLinecap="round" />
       </svg>
     ),
   },
@@ -60,16 +101,22 @@ const FEATURES = [
 
 const TESTIMONIALS = [
   {
-    quote: "I stopped waking up confused. It feels gentle and surprisingly human.",
-    name: "Maya, Product Designer",
+    initials: "AL",
+    quote: "I wake up clearer and less stressed than with my old alarm.",
+    name: "Ana L.",
+    role: "Founder, Health Startup",
   },
   {
-    quote: "Two weeks in and mornings feel less like a fight.",
-    name: "Leo, Software Engineer",
+    initials: "MC",
+    quote: "The sheep makes bedtime feel intentional, not chaotic.",
+    name: "Marc C.",
+    role: "iOS Engineer",
   },
   {
-    quote: "The sheep makes bedtime feel calm instead of stressful.",
-    name: "Nora, Medical Student",
+    initials: "RP",
+    quote: "Simple data, better mornings. Exactly what I needed.",
+    name: "Rita P.",
+    role: "Product Manager",
   },
 ];
 
@@ -103,291 +150,194 @@ export default function HomePage() {
 
   return (
     <main className="page">
-      <section
-        style={{
-          position: "relative",
-          minHeight: "100svh",
-          overflow: "hidden",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <StarField
-          className="starfield"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            zIndex: 0,
-          }}
-        />
-        <div
-          className="atmosphere-blob"
-          style={{ width: "14rem", height: "14rem", top: "12%", left: "-2rem" }}
-        />
-        <div
-          className="atmosphere-blob"
-          style={{ width: "18rem", height: "18rem", right: "-4rem", bottom: "8%" }}
-        />
+      <Navbar />
 
-        <div
-          className="section-container"
-          style={{ position: "relative", zIndex: 1, textAlign: "center", paddingTop: "3rem", paddingBottom: "3rem" }}
-        >
-          <p className="eyebrow">Sleep Sheep · Coming Soon</p>
-          <h1
-            className="hero-gradient-title"
-            style={{
-              margin: "0.7rem 0 0",
-              fontSize: "clamp(2rem, 8vw, 4.2rem)",
-              lineHeight: 1.08,
-              fontWeight: 400,
-              letterSpacing: "-0.02em",
-            }}
-          >
-            Wake up feeling
-            <br />
-            actually rested.
-          </h1>
-
-          <p className="muted" style={{ margin: "1rem auto 0", maxWidth: "33ch" }}>
-            A softer alarm that waits for your right sleep moment.
-          </p>
-
-          <div
-            style={{
-              marginTop: "1.4rem",
-              display: "flex",
-              gap: "0.7rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <button className="btn btn-primary" type="button">
-              Download on App Store
-            </button>
-            <button className="btn btn-outline" type="button">
-              Join the waitlist
-            </button>
+      <section className="hero-section">
+        <StarField className="hero-stars" />
+        <div className="atmosphere-blob blob-a" />
+        <div className="atmosphere-blob blob-b" />
+        <div className="section-container hero-grid">
+          <div className="hero-visual">
+            <Sheep size={220} glow className="floating-sheep" />
           </div>
-
-          <p className="body-small muted" style={{ marginTop: "0.75rem" }}>
-            Anonymous · 2 min · No sign-up
-          </p>
-
-          <div style={{ marginTop: "1.35rem", display: "flex", justifyContent: "center" }}>
-            <Sheep
-              size={168}
-              className="hero-sheep"
-              style={{ animation: "sheepFloat 4.8s ease-in-out infinite" }}
-            />
+          <div className="hero-copy">
+            <p className="hero-pill">✦ Now building · Join the waitlist</p>
+            <h1 className="hero-gradient-title">
+              Wake up clear,
+              <br />
+              not just awake.
+            </h1>
+            <p className="muted">Sleep Sheep wakes you in your lightest phase for softer mornings.</p>
+            <div className="hero-actions">
+              <a href="#waitlist" className="btn btn-primary">Join the waitlist</a>
+              <a href="#how-it-works" className="btn btn-outline">See how it works</a>
+            </div>
+            <div className="hero-micro-pills">
+              <span>Free to start</span>
+              <span>iOS app</span>
+              <span>Coming 2025</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "5.5rem 0", textAlign: "center" }}>
-        <div className="section-container" style={{ maxWidth: "44rem" }}>
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "clamp(1.7rem, 6vw, 2.8rem)",
-              lineHeight: 1.16,
-              fontWeight: 400,
-            }}
-          >
+      <section className="section-problem" id="problem">
+        <div className="section-container section-centered">
+          <h2>
             Most alarms wake you up at the worst possible moment.
           </h2>
-          <p className="muted" style={{ margin: "1rem auto 0", maxWidth: "38ch" }}>
-            Sleep cycles shift all night. If your alarm rings in deep sleep, your brain and body
-            fight the wake-up, and you start the day heavy, foggy, and drained.
+          <p className="muted">
+            Sleep cycles shift through the night. Wake in deep sleep and your body starts the day
+            heavy, slow, and cognitively foggy.
           </p>
-        </div>
-      </section>
-
-      <section ref={stepsRef} className="surface" style={{ padding: "5rem 0" }}>
-        <div className="section-container" style={{ maxWidth: "42rem" }}>
-          {STEPS.map((step) => (
-            <article
-              key={step.number}
-              data-reveal
-              className="fade-up"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "auto 1fr",
-                gap: "1rem",
-                alignItems: "start",
-                padding: "1.2rem 0",
-                borderBottom: "1px solid var(--border)",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "2rem",
-                  lineHeight: 1,
-                  color: "var(--purple-light)",
-                  fontWeight: 300,
-                  minWidth: "2.6ch",
-                }}
-              >
-                {step.number}
-              </span>
-              <div>
-                <h3 style={{ margin: 0, fontSize: "1.25rem", lineHeight: 1.4, fontWeight: 400 }}>
-                  {step.title}
-                </h3>
-                <p className="muted" style={{ margin: "0.45rem 0 0", whiteSpace: "pre-line" }}>
-                  {step.description}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section style={{ padding: "5.5rem 0", textAlign: "center" }}>
-        <div className="section-container" style={{ maxWidth: "38rem" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
-            <Sheep size={200} style={{ animation: "sheepFloat 5.4s ease-in-out infinite" }} />
+          <div className="stats-grid">
+            {STATS.map((stat) => (
+              <article key={stat.value}>
+                <p className="stat-value">{stat.value}</p>
+                <p className="muted body-small">{stat.label}</p>
+              </article>
+            ))}
           </div>
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "clamp(1.7rem, 6vw, 2.7rem)",
-              lineHeight: 1.16,
-              fontWeight: 400,
-            }}
-          >
+        </div>
+      </section>
+
+      <section className="surface section-how" id="how-it-works" ref={stepsRef}>
+        <div className="section-container section-centered">
+          <h2>How it works</h2>
+          <div className="steps-list">
+            {HOW_IT_WORKS.map((step) => (
+              <article key={step.number} data-reveal className="fade-up step-item">
+                <span>{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p className="muted">{step.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <a href="#" className="science-link">Learn about the science →</a>
+        </div>
+      </section>
+
+      <section className="section-mockup">
+        <div className="section-container section-centered">
+          <h2>Everything you need, nothing you don&apos;t.</h2>
+          <div className="devices-row">
+            <DeviceFrame variant="home" title="Sleep start" />
+            <DeviceFrame variant="cycles" title="Cycles map" />
+            <DeviceFrame variant="alarm" title="Gentle alarm" />
+          </div>
+        </div>
+      </section>
+
+      <section className="section-features" id="features">
+        <div className="section-container section-centered">
+          <h2>Core features built for real mornings.</h2>
+          <div className="features-grid">
+            {FEATURES.map((feature) => (
+              <article key={feature.title} className="card feature-card">
+                <div className="feature-icon">{feature.icon}</div>
+                <h3>{feature.title}</h3>
+                <p className="muted">{feature.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-mascot">
+        <div className="section-container section-centered">
+          <Sheep size={180} glow className="floating-sheep" />
+          <h2>
             Meet your sleep companion.
           </h2>
-          <p className="muted" style={{ margin: "0.9rem auto 0", maxWidth: "35ch" }}>
-            Sleep Sheep sits with you at bedtime and greets you in the morning.
+          <p className="muted">
+            Sleep Sheep is there when your day winds down, and there again at sunrise.
             <br />
-            A tiny ritual that makes nights feel safer and softer.
+            A soft guide for better nights, one cycle at a time.
           </p>
+          <p className="mascot-quote">There every night. Gone by morning.</p>
         </div>
       </section>
 
-      <section style={{ padding: "0 0 5.5rem" }}>
-        <div className="section-container">
-          <div
-            style={{
-              display: "grid",
-              gap: "0.9rem",
-              gridTemplateColumns: "1fr",
-            }}
-          >
-            {FEATURES.map((feature) => (
-              <article key={feature.title} className="card" style={{ padding: "1.1rem" }}>
-                <div style={{ marginBottom: "0.55rem" }}>{feature.icon}</div>
-                <h3 style={{ margin: 0, fontSize: "1.05rem", lineHeight: 1.45, fontWeight: 400 }}>
-                  {feature.title}
-                </h3>
-                <p className="muted" style={{ margin: "0.45rem 0 0", whiteSpace: "pre-line" }}>
-                  {feature.text}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="surface" style={{ padding: "5rem 0" }}>
-        <div className="section-container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "0.9rem" }}>
-            {TESTIMONIALS.map((item) => (
-              <article key={item.name} className="card" style={{ padding: "1rem" }}>
-                <p style={{ margin: 0 }}>{item.quote}</p>
-                <p className="body-small muted" style={{ margin: "0.45rem 0 0" }}>
-                  {item.name}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ padding: "5.5rem 0 4.5rem" }}>
-        <div className="section-container" style={{ maxWidth: "44rem", textAlign: "center" }}>
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "clamp(1.7rem, 6vw, 2.8rem)",
-              lineHeight: 1.16,
-              fontWeight: 400,
-            }}
-          >
-            Be the first to sleep better.
-          </h2>
-          <form
-            style={{
-              marginTop: "1.2rem",
-              display: "grid",
-              gridTemplateColumns: "1fr",
-              gap: "0.6rem",
-            }}
-          >
-            <input
-              type="email"
-              className="input-base"
-              placeholder="you@email.com"
-              aria-label="Email address"
+      <section className="surface section-pricing" id="pricing">
+        <div className="section-container section-centered">
+          <h2>Choose your sleep plan.</h2>
+          <div className="pricing-grid">
+            <PricingCard
+              name="Free"
+              price="€0"
+              priceHint="Forever starter tier"
+              features={["Smart alarm", "Basic cycle tracking", "Morning log", "Weekly snapshot"]}
+              cta="Start free"
             />
-            <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
-              Join the waitlist
-            </button>
-          </form>
-          <p className="body-small muted" style={{ marginTop: "0.7rem" }}>
-            No spam. Ever.
+            <PricingCard
+              name="Pro"
+              price="€3.99/mes"
+              priceHint="For deeper sleep insights"
+              features={["Everything in Free", "Advanced cycle graph", "Sleep sounds", "Wearable sync", "Priority updates"]}
+              cta="Go Pro"
+              highlighted
+            />
+            <PricingCard
+              name="Annual"
+              price="€29.99/año"
+              priceHint="Save 37%"
+              features={["Everything in Pro", "Best value pricing", "Early features", "Priority support", "Annual reports"]}
+              cta="Choose annual"
+            />
+          </div>
+          <p className="muted body-small pricing-note">
+            No credit card required to start. Cancel anytime.
           </p>
         </div>
       </section>
 
-      <footer style={{ padding: "0 0 2rem" }}>
+      <section className="section-faq" id="faq">
+        <div className="section-container section-centered">
+          <h2>Frequently asked questions</h2>
+          <FAQ />
+        </div>
+      </section>
+
+      <section className="surface section-social-proof">
         <div className="section-container">
-          <hr className="soft-divider" />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "0.8rem",
-              alignItems: "center",
-              flexWrap: "wrap",
-              paddingTop: "0.9rem",
-            }}
-          >
-            <p style={{ margin: 0 }}>Sleep Sheep</p>
-            <nav style={{ display: "flex", gap: "0.75rem" }} aria-label="Footer links">
-              <a className="muted body-small" href="#">
-                Privacy
-              </a>
-              <a className="muted body-small" href="#">
-                Terms
-              </a>
-              <a className="muted body-small" href="#">
-                Contact
-              </a>
-            </nav>
+          <div className="testimonials-grid">
+            {TESTIMONIALS.map((item) => (
+              <article key={item.name} className="card testimonial-card">
+                <div className="avatar">{item.initials}</div>
+                <p>{item.quote}</p>
+                <p className="body-small muted">{item.name} · {item.role}</p>
+              </article>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
 
-      <style jsx>{`
-        @media (min-width: 768px) {
-          section:nth-of-type(5) > div > div,
-          section:nth-of-type(6) > div > div {
-            grid-template-columns: repeat(3, 1fr);
-          }
+      <section className="section-press">
+        <div className="section-container section-centered">
+          <p className="eyebrow">As seen in</p>
+          <div className="press-logos">
+            <span>Product Hunt</span>
+            <span>TechCrunch</span>
+            <span>AppAdvice</span>
+          </div>
+          <a href="mailto:media@sleepsheep.app" className="body-small muted">
+            Are you a journalist? media@sleepsheep.app
+          </a>
+        </div>
+      </section>
 
-          section:nth-of-type(7) form {
-            grid-template-columns: 1fr auto;
-          }
+      <section className="section-waitlist" id="waitlist">
+        <div className="section-container section-centered">
+          <h2>Be the first to sleep better.</h2>
+          <WaitlistForm />
+          <p className="body-small muted">Join 1,240 people already waiting.</p>
+          <p className="body-small muted">No spam. Unsubscribe anytime.</p>
+        </div>
+      </section>
 
-          section:nth-of-type(7) form button {
-            width: auto;
-          }
-        }
-      `}</style>
+      <Footer />
     </main>
   );
 }
