@@ -6,7 +6,6 @@ import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import PricingCard from "../components/PricingCard";
-import Sheep from "../components/Sheep";
 import StarField from "../components/StarField";
 import WaitlistForm from "../components/WaitlistForm";
 
@@ -153,13 +152,12 @@ export default function HomePage() {
       <Navbar />
 
       <section className="hero-section">
+        <div className="hero-wallpaper" aria-hidden="true" />
         <StarField className="hero-stars" />
         <div className="atmosphere-blob blob-a" />
         <div className="atmosphere-blob blob-b" />
+        <div className="hero-bottom-fade" aria-hidden="true" />
         <div className="section-container hero-grid">
-          <div className="hero-visual">
-            <Sheep size={220} glow className="floating-sheep" />
-          </div>
           <div className="hero-copy">
             <p className="hero-pill">✦ Now building · Join the waitlist</p>
             <h1 className="hero-gradient-title">
@@ -247,7 +245,6 @@ export default function HomePage() {
 
       <section className="section-mascot">
         <div className="section-container section-centered">
-          <Sheep size={180} glow className="floating-sheep" />
           <h2>
             Meet your sleep companion.
           </h2>

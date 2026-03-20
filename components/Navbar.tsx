@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Sheep from "./Sheep";
+import Image from "next/image";
+import logoImago from "../assets/logos/imago_sleepsheep_black.svg";
 
 const NAV_ITEMS = [
   { href: "/#how-it-works", label: "How it works" },
@@ -16,7 +17,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 60);
+      setScrolled(window.scrollY > 120);
     };
 
     onScroll();
@@ -35,8 +36,7 @@ export default function Navbar() {
     <header className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
       <div className="section-container nav-inner">
         <a href="/" className="nav-brand" aria-label="Sleep Sheep home">
-          <Sheep size={28} />
-          <span>Sleep Sheep</span>
+          <Image src={logoImago} alt="Sleep Sheep" className="brand-logo" priority />
         </a>
 
         <nav className="nav-links" aria-label="Primary">

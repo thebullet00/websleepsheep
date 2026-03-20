@@ -1,4 +1,5 @@
-import Sheep from "./Sheep";
+import Image from "next/image";
+import logoImago from "../assets/logos/imago_sleepsheep_black.svg";
 
 function SocialIcons() {
   return (
@@ -32,8 +33,7 @@ export default function Footer() {
         <div className="footer-grid">
           <section>
             <div className="footer-brand">
-              <Sheep size={24} />
-              <strong>Sleep Sheep</strong>
+              <Image src={logoImago} alt="Sleep Sheep" className="brand-logo brand-logo-footer" />
             </div>
             <p className="muted body-small">Smart mornings start with softer nights.</p>
             <SocialIcons />
