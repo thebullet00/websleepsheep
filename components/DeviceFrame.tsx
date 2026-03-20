@@ -1,5 +1,3 @@
-import Sheep from "./Sheep";
-
 type DeviceVariant = "home" | "cycles" | "alarm";
 
 type DeviceFrameProps = {
@@ -34,7 +32,7 @@ export default function DeviceFrame({ variant, title }: DeviceFrameProps) {
         <p className="device-title body-small muted">{title}</p>
         {variant === "home" && (
           <div className="device-home">
-            <Sheep size={78} glow />
+            <div className="device-home-dot" aria-hidden="true" />
             <p className="body-small muted">Good night mode</p>
           </div>
         )}

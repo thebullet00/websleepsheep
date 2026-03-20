@@ -187,10 +187,6 @@ h3 {
   transform: translateY(0);
 }
 
-.floating-sheep {
-  animation: sheepFloat 5s ease-in-out infinite;
-}
-
 .atmosphere-blob {
   position: absolute;
   border-radius: 999px;
@@ -206,27 +202,61 @@ h3 {
   top: 0;
   width: 100%;
   z-index: 40;
-  background: color-mix(in srgb, var(--bg-deep) 90%, transparent);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  transition: background-color 260ms ease, backdrop-filter 260ms ease, border-color 260ms ease;
+}
+
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--border);
+  opacity: 0;
+  transform: scaleX(0.94);
+  transform-origin: center;
+  transition: opacity 260ms ease, transform 260ms ease;
+  pointer-events: none;
 }
 
 .nav-scrolled {
-  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg-deep) 90%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+}
+
+.nav-scrolled::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .nav-inner {
-  min-height: 72px;
+  min-height: 116px;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.2rem;
 }
 
 .nav-brand {
   display: inline-flex;
-  gap: 0.45rem;
   align-items: center;
-  font-size: 16px;
+}
+
+.brand-logo {
+  width: 168px;
+  height: auto;
+  filter: brightness(0) invert(1);
+}
+
+.brand-logo-footer {
+  width: 128px;
 }
 
 .nav-links {
@@ -332,12 +362,43 @@ h3 {
   align-items: center;
 }
 
+.hero-wallpaper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/Videos/wallpaper%20hero.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 0.58;
+}
+
 .hero-stars {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1;
+  opacity: 0.45;
+}
+
+.hero-bottom-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: min(34vh, 280px);
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 9, 26, 0) 0%,
+    rgba(11, 9, 26, 0.35) 45%,
+    rgba(11, 9, 26, 0.78) 75%,
+    var(--bg-deep) 100%
+  );
 }
 
 .blob-a {
@@ -355,21 +416,19 @@ h3 {
 }
 
 .hero-grid {
-  z-index: 1;
+  z-index: 3;
   position: relative;
-  display: grid;
-  gap: 1.3rem;
+  min-height: calc(100svh - 5.5rem);
+  display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.hero-visual {
-  display: flex;
-  justify-content: center;
-}
-
 .hero-copy {
   text-align: center;
+  width: min(100%, 46rem);
+  margin-inline: auto;
 }
 
 .hero-pill {
@@ -439,9 +498,29 @@ h3 {
 }
 
 .stats-grid article {
-  border: 1px solid var(--border);
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--white-warm) 14%, var(--border));
   border-radius: 16px;
   padding: 0.85rem;
+  background: color-mix(in srgb, var(--white-warm) 6%, transparent);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  overflow: hidden;
+}
+
+.stats-grid article::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--white-warm) 14%, transparent) 0%,
+    color-mix(in srgb, var(--purple-light) 6%, transparent) 36%,
+    transparent 70%
+  );
+  opacity: 0.6;
 }
 
 .stat-value {
@@ -534,6 +613,14 @@ h3 {
   min-height: 250px;
 }
 
+.device-home-dot {
+  width: 78px;
+  height: 78px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--purple-light) 22%, var(--bg-surface));
+}
+
 .device-chart {
   margin-top: 1rem;
   width: 100%;
@@ -581,10 +668,6 @@ h3 {
 
 .section-mascot {
   text-align: center;
-}
-
-.section-mascot .floating-sheep {
-  margin-bottom: 1rem;
 }
 
 .mascot-quote {
@@ -741,6 +824,14 @@ h3 {
   gap: 0.35rem;
 }
 
+.waitlist-success-dot {
+  width: 78px;
+  height: 78px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--purple-light) 22%, var(--bg-surface));
+}
+
 .section-waitlist p {
   margin-top: 0.65rem;
 }
@@ -757,7 +848,6 @@ h3 {
 
 .footer-brand {
   display: inline-flex;
-  gap: 0.45rem;
   align-items: center;
 }
 
@@ -844,18 +934,6 @@ h3 {
   flex-wrap: wrap;
 }
 
-@keyframes sheepFloat {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-9px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
 @keyframes pillPulse {
   0% {
     opacity: 0.86;
@@ -881,9 +959,9 @@ h3 {
 
   .nav-links {
     display: inline-flex;
-    gap: 1rem;
+    gap: 1.25rem;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
   }
 
@@ -895,25 +973,6 @@ h3 {
   .mobile-panel,
   .nav-overlay {
     display: none;
-  }
-
-  .hero-grid {
-    grid-template-columns: 1.06fr 1fr;
-  }
-
-  .hero-visual {
-    order: 2;
-    justify-content: flex-end;
-  }
-
-  .hero-copy {
-    order: 1;
-    text-align: left;
-  }
-
-  .hero-actions,
-  .hero-micro-pills {
-    justify-content: flex-start;
   }
 
   .stats-grid {

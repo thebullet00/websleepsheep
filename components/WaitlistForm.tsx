@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Sheep from "./Sheep";
 
 export default function WaitlistForm() {
   const [submitted, setSubmitted] = useState(false);
@@ -16,7 +15,7 @@ export default function WaitlistForm() {
   if (submitted) {
     return (
       <div className="waitlist-success card">
-        <Sheep size={78} glow />
+        <div className="waitlist-success-dot" aria-hidden="true" />
         <p>You&apos;re on the list ✦</p>
       </div>
     );
